@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Landing Page</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Minified/styles.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="contact_options">
+        <div class="social_icons">
+            <a href="https://www.facebook.com" target="_blank" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com" target="_blank" class="social-icon">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com" target="_blank" class="social-icon">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+        <div class="support_options">
+            <a href="tel:+1234567890" class="contact-link">
+                <i class="fas fa-phone-alt"></i> Call Us
+            </a>
+            <span></span>
+            <a href="mailto:example@email.com" class="contact-link">
+                <i class="fas fa-envelope"></i> Email Us
+            </a>
+        </div>
+        <button id="quoteButton">Request A Quote</button>
+    </div>
+
+    <header id="header">
+        <div class="logo">LandingPage</div>
+        <nav>
+            <ul>
+                <li id="top"><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Our Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        
+        <div class="hambugger" id="hambugger">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+
+    <!-- Menu Mobile -->
+
+    <div class="mobile-menu">
+     <div class="close-menu"><span></span><span></span></div>
+     <ul>
+        <li id="top"><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#services">Our Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+
+     </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Revolutionizing Your Experience</h1>
+            <p>Delivering powerful tools for better productivity.</p>
+            <a href="#contact" class="cta-btn">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="feature-card">
+            <div class="icon">🚀</div>
+            <h3>High Performance</h3>
+            <p>Boost your productivity with a powerful suite of tools.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">⚡</div>
+            <h3>Fast & Efficient</h3>
+            <p>Designed for speed, delivering results faster than ever.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔒</div>
+            <h3>Secure</h3>
+            <p>Top-notch security to protect your valuable data.</p>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about">
+        <div class="about-content">
+            <h2>About Us</h2>
+            <div class="about-info">
+                <img src="assets/images/team_photo.jpg" alt="Our Team" class="about-img">
+                <p>We are a team of passionate individuals committed to delivering world-class digital solutions to help businesses grow and thrive in the modern era. With years of experience and cutting-edge technology, we are here to drive innovation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Services Section -->
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <div class="services-inner">
+            <div class="service-card">
+                <img src="assets/images/software_development.jpg" alt="Custom Software Development" class="service-image">
+                <h3>Custom Software Development</h3>
+                <p>Tailored solutions to meet the unique needs of your business, from ideation to deployment.</p>
+            </div>
+            <div class="service-card">
+                <img src="assets/images/ui-ux-design-ai-image.jpg" alt="UI/UX Design" class="service-image">
+                <h3>UI/UX Design</h3>
+                <p>Designing intuitive and visually appealing interfaces that provide seamless user experiences.</p>
+            </div>
+            <div class="service-card">
+                <img src="assets/images/cloud-solutions.jpg" alt="Cloud Solutions" class="service-image">
+                <h3>Cloud Solutions</h3>
+                <p>Reliable and secure cloud-based solutions to improve business efficiency and collaboration.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <form action="#" method="post">
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 LadingPage. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Modal Structure -->
+<div id="quoteModal" class="modal">
+    <div class="modal-content">
+        <h2>Request A Quote</h2>
+        <form action="#" method="post">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+    <script src="Minified/script.js"></script>
+</body>
+</html>
