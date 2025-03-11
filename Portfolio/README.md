@@ -110,7 +110,8 @@ No additional dependencies or build tools are required.
 
 ## Live Preview 
 
-[**Demo**](https://stupendous-klepon-ea6eb9.netlify.app/adhfar%20mujtaba%20-portfolio.mp4)  
+[**CLICK ME**](https://stupendous-klepon-ea6eb9.netlify.app/adhfar%20mujtaba%20-portfolio.mp4)
+if Video tag dont support  
 <video controls style="width: 100%; max-width: 600px;">
   <source src="https://stupendous-klepon-ea6eb9.netlify.app/adhfar%20mujtaba%20-portfolio.mp4" type="video/mp4">
   Your browser does not support the video tag.
