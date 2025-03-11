@@ -11,6 +11,7 @@ This repository contains the source code for **Adhfar Mujtaba's Portfolio Websit
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Live Preview](#live-preview)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -104,6 +105,12 @@ No additional dependencies or build tools are required.
 
 ### Contact Form
 - Fill out the contact form and click "Send Message" to send an email directly to Adhfar.
+
+---
+
+## Live Preview
+
+<div style="padding:53.13% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1064725876?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Adhfar Mujtaba - Portfolio"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
 
 ---
 

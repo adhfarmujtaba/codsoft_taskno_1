@@ -2,7 +2,7 @@
 const ELEMENTS = {
     HEADER: 'header',
     DEV_NAME: 'devName',
-    HAMBURGER: 'hamburger',
+    HAMBURGER: 'hambugger',
     SIDE_MENU: 'sideMenu',
     MAIN: 'main',
     SIDE_MENU_CLOSE: 'sideMenuClose',
