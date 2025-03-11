@@ -74,7 +74,7 @@ This is a simple yet elegant calculator web application built using HTML, CSS, a
 
 ## Live Demo
 
-You can try out the live demo of this calculator [here](https://adhfarlandingpage.netlify.app/).  
+You can try out the live demo of this calculator [here](https://adhfarscalculator.netlify.app/).  
 
 
 ---
