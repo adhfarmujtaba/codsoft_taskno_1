@@ -2,7 +2,7 @@
 const ELEMENTS = {
     HEADER: 'header',
     DEV_NAME: 'devName',
-    HAMBURGER: 'hambugger', 
+    HAMBURGER: 'hamburger',
     SIDE_MENU: 'sideMenu',
     MAIN: 'main',
     SIDE_MENU_CLOSE: 'sideMenuClose',
@@ -180,179 +180,157 @@ const setupSmoothScroll = () => {
     });
 };
 
-// Section animation helpers
-const animateWithDelay = (element, className, delay) => {
-    if (!element) return;
-    setTimeout(() => {
-        element.classList.add(className);
-    }, delay);
-};
-
-// About section animation
-const setupAboutSectionObserver = () => {
-    const aboutSection = document.querySelector('.about');
-    if (!aboutSection) return;
-    
-    const aboutElements = {
-        heading: document.querySelector('.about h2'),
-        paragraph: document.querySelector('.about p'),
-        detailSection: document.querySelector('.about .detail-section'),
-        detailImg: document.querySelector('.about .detail-img'),
-        info: document.querySelector('.about .info'),
-        profileInfo: document.querySelectorAll('.profile-info p')
-    };
-    
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateAboutSection(aboutSection, aboutElements, true);
-            } else {
-                animateAboutSection(aboutSection, aboutElements, false);
-            }
-        });
-    }, { threshold: 0.02 });
-    
-    observer.observe(aboutSection);
-};
-
-const animateAboutSection = (section, elements, isVisible) => {
-    if (!section) return;
-    
-    if (isVisible) {
-        section.classList.add('fadeInVisible');
-        animateWithDelay(elements.heading, 'fadeInHeading', 100);
-        animateWithDelay(elements.paragraph, 'fadeInParagraph', 300);
-        animateWithDelay(elements.detailSection, 'fadeInDetailSection', 500);
-        animateWithDelay(elements.detailImg, 'fadeInImage', 700);
-        animateWithDelay(elements.info, 'fadeInInfo', 900);
-        
-        if (elements.profileInfo) {
-            elements.profileInfo.forEach((p, index) => {
-                animateWithDelay(p, 'fadeInVisible', 1100 + (index * 150));
-            });
-        }
-    } else {
-        section.classList.remove('fadeInVisible');
-        if (elements.heading) elements.heading.classList.remove('fadeInHeading');
-        if (elements.paragraph) elements.paragraph.classList.remove('fadeInParagraph');
-        if (elements.detailSection) elements.detailSection.classList.remove('fadeInDetailSection');
-        if (elements.detailImg) elements.detailImg.classList.remove('fadeInImage');
-        if (elements.info) elements.info.classList.remove('fadeInInfo');
-        if (elements.profileInfo) {
-            elements.profileInfo.forEach(p => p.classList.remove('fadeInVisible'));
-        }
+// Unified animation configuration
+const ANIMATION_CONFIG = {
+// About section animations
+    about: {
+        section: { class: 'fadeInVisible', threshold: 0.02 },
+        elements: [
+            { selector: 'h2', class: 'fadeInHeading', threshold: 0.1 },
+            { selector: 'p', class: 'fadeInParagraph', threshold: 0.1 },
+            { selector: '.detail-section', class: 'fadeInDetailSection', threshold: 0.1 },
+            { selector: '.detail-img', class: 'fadeInImage', threshold: 0.1 },
+            { selector: '.info', class: 'fadeInInfo', threshold: 0.1 },
+            { selector: '.profile-info p', class: 'fadeInVisible', threshold: 0.1 }
+        ]
+    },
+// Skills section animations
+    skills: {
+        section: { class: 'fadeInSkills', threshold: 0.05 },
+        elements: [
+            { selector: '.skill', class: 'fadeInSkillBar', threshold: 0.5, isStaggered: true }
+        ]
+    },
+// Resume section animations
+    resume: {
+        section: { class: 'fadeInResumeContainer', threshold: 0.02 },
+        elements: [
+            { selector: '.resume-title, .resume-section', class: 'show', threshold: 0.1 },
+            { selector: '.timeline', class: 'show', threshold: 0.1 },
+            { selector: '.timeline-item', class: 'visible', threshold: 0.1, isStaggered: true }
+        ]
+    },
+// Projects section animations
+    projects: {
+        section: { class: 'fadeInProjects', threshold: 0.2 },
+        elements: [
+            { selector: '.project-card', class: 'fadeInProject', threshold: 0.1, isStaggered: true },
+            { selector: '.project-title, .project-description, .project-links, .project-image', class: 'fadeInProjectElement', threshold: 0.1, isStaggered: true }
+        ]
     }
 };
 
-// Skills section animation
-const setupSkillsSectionObserver = () => {
-    const skillsSection = document.getElementById('skills');
-    if (!skillsSection) return;
+//Single IntersectionObserver for animations
+const createAnimationObserver = (callback, options = {}) => {
+    const defaultOptions = { threshold: 0.1, rootMargin: '0px' };
+    const mergedOptions = { ...defaultOptions, ...options };
+    return new IntersectionObserver(callback, mergedOptions);
+};
+
+// Handle animations for skills section progress bars
+const animateSkillBar = (skillElement, isVisible) => {
+    const progressBar = skillElement.querySelector('.skill-progress');
+    if (!progressBar) return;
     
-    const skillItems = document.querySelectorAll('.skill');
-    const skillBars = document.querySelectorAll('.skill-progress');
+    const percentEl = skillElement.querySelector('[data-percent]');
+    if (!percentEl) return;
     
-    skillItems.forEach((item, index) => {
-        item.style.setProperty('--i', index);
+    const percent = percentEl.getAttribute('data-percent');
+    
+    if (isVisible) {
+        // Reset
+        progressBar.style.width = '0';
+        setTimeout(() => {
+            progressBar.style.width = percent;
+        }, 300);
+    } else {
+        progressBar.style.width = '0';
+    }
+};
+
+// Setup all section animations
+const setupAnimations = () => {
+    // Process each section defined in ANIMATION_CONFIG
+    Object.entries(ANIMATION_CONFIG).forEach(([sectionKey, config]) => {
+        const sectionElement = sectionKey === 'resume' 
+            ? document.querySelector('.resume-container')
+            : document.querySelector(sectionKey === 'projects' ? '.projects-section' : `#${sectionKey}`);
+        
+        if (!sectionElement) return;
+        
+        const sectionObserver = createAnimationObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        sectionElement.classList.add(config.section.class);
+                        
+// For skills section, special handling for progress bars reset
+                        if (sectionKey === 'skills' && !entry.isIntersecting) {
+                            const skillElements = sectionElement.querySelectorAll('.skill');
+                            skillElements.forEach(skill => animateSkillBar(skill, false));
+                        }
+                    } else {
+                        sectionElement.classList.remove(config.section.class);
+                    }
+                });
+            },
+            { threshold: config.section.threshold }
+        );
+        
+        sectionObserver.observe(sectionElement);
+        
+// Process elements within the section
+        config.elements.forEach(elementConfig => {
+            const elements = sectionElement.querySelectorAll(elementConfig.selector);
+            
+// Set indices for staggered animations if needed
+            if (elementConfig.isStaggered) {
+                elements.forEach((el, index) => {
+                    el.style.setProperty('--i', index);
+                    el.style.setProperty('--index', index);
+                });
+            }
+            
+// Create observer for elements
+            const elementObserver = createAnimationObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        const el = entry.target;
+                        
+                        if (entry.isIntersecting) {
+                            if (elementConfig.isStaggered) {
+                                const index = parseInt(el.style.getPropertyValue('--i') || 0);
+                                setTimeout(() => {
+                                    el.classList.add(elementConfig.class);
+                                }, index * 200);
+                            } else {
+                                el.classList.add(elementConfig.class);
+                            }
+                            
+                            // Special handling for skill bars
+                            if (sectionKey === 'skills' && el.classList.contains('skill')) {
+                                animateSkillBar(el, true);
+                            }
+                        } else {
+                            el.classList.remove(elementConfig.class);
+                            
+                            // Reset skill bars when no longer visible
+                            if (sectionKey === 'skills' && el.classList.contains('skill')) {
+                                animateSkillBar(el, false);
+                            }
+                        }
+                    });
+                },
+                { 
+                    threshold: elementConfig.threshold || 0.1,
+                    rootMargin: elementConfig.rootMargin || '0px'
+                }
+            );
+            
+            // Observe each element
+            elements.forEach(el => elementObserver.observe(el));
+        });
     });
-    
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                skillsSection.classList.add('fadeInSkills');
-                
-                skillItems.forEach((item, index) => {
-                    setTimeout(() => {
-                        item.classList.add('fadeInSkillBar');
-                    }, 300 * index);
-                });
-                
-                skillBars.forEach((bar, index) => {
-                    setTimeout(() => {
-                        const percent = bar.parentElement.previousElementSibling?.getAttribute('data-percent');
-                        if (percent) bar.style.width = percent;
-                    }, 200 + (500 * index));
-                });
-            } else {
-                skillsSection.classList.remove('fadeInSkills');
-                skillItems.forEach(item => item.classList.remove('fadeInSkillBar'));
-                skillBars.forEach(bar => { bar.style.width = '0'; });
-            }
-        });
-    }, { threshold: 0.02 });
-    
-    observer.observe(skillsSection);
-};
-
-// Resume section animation
-const setupResumeSectionObserver = () => {
-    const resumeContainer = document.querySelector('.resume-container');
-    if (!resumeContainer) return;
-    
-    const timelineItems = document.querySelectorAll('.timeline');
-    
-    document.querySelectorAll('.timeline-item').forEach((item, index) => {
-        item.style.setProperty('--index', index);
-    });
-    
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                resumeContainer.classList.add('fadeInResumeContainer');
-                
-                setTimeout(() => {
-                    resumeContainer.querySelectorAll('.resume-title, .resume-section').forEach(element => 
-                        element.classList.add('show')
-                    );
-                    timelineItems.forEach(item => item.classList.add('show'));
-                }, 300);
-            } else {
-                resumeContainer.classList.remove('fadeInResumeContainer');
-                
-                resumeContainer.querySelectorAll('.resume-title, .resume-section').forEach(element => 
-                    element.classList.remove('show')
-                );
-                timelineItems.forEach(item => item.classList.remove('show'));
-            }
-        });
-    }, { threshold: 0.02 });
-    
-    observer.observe(resumeContainer);
-};
-
-// Project section animation
-const setupProjectSectionObserver = () => {
-    const projectSection = document.querySelector('.projects-section');
-    if (!projectSection) return;
-    
-    const projectCards = document.querySelectorAll('.project-card');
-
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                projectSection.classList.add('fadeInProjects');
-                
-                projectCards.forEach((card, index) => {
-                    setTimeout(() => {
-                        card.classList.add('fadeInProject');
-                    }, index * 200);
-                });
-            } else {
-                projectSection.classList.remove('fadeInProjects');
-                projectCards.forEach(card => card.classList.remove('fadeInProject'));
-            }
-        });
-    }, { threshold: 0.2 });
-
-    observer.observe(projectSection);
-};
-
-// Section Intersection Observers
-const setupIntersectionObservers = () => {
-    setupAboutSectionObserver();
-    setupSkillsSectionObserver();
-    setupResumeSectionObserver();
-    setupProjectSectionObserver();
 };
 
 // Update active navigation item based on scroll position
@@ -416,6 +394,33 @@ const setupScrollToTop = (elements) => {
     });
 };
 
+// window orientation changes
+const setupOrientationChangeHandler = () => {
+    window.addEventListener('orientationchange', () => {
+// very little delay to allow layout to settle
+        setTimeout(() => {
+// Find all skills and reset progress bars
+            const skillElements = document.querySelectorAll('.skill');
+            skillElements.forEach(skill => {
+                const progressBar = skill.querySelector('.skill-progress');
+                if (progressBar) {
+                    progressBar.style.width = '0';
+// Re-trigger animation if skill is in view
+                    if (skill.classList.contains('fadeInSkillBar')) {
+                        const percentEl = skill.querySelector('[data-percent]');
+                        if (percentEl) {
+                            const percent = percentEl.getAttribute('data-percent');
+                            setTimeout(() => {
+                                progressBar.style.width = percent;
+                            }, 300);
+                        }
+                    }
+                }
+            });
+        }, 200);
+    });
+};
+
 // Initialization function
 const init = () => {
     const elements = cacheElements();
@@ -425,7 +430,10 @@ const init = () => {
     setupHireMeModal(elements);
     setupSmoothScroll();
     setupScrollToTop(elements);
-    setupIntersectionObservers();
+    setupOrientationChangeHandler();
+    
+    // Replace all individual observers with unified animation system
+    setupAnimations();
     updateActiveNavOnScroll();
 };
 
